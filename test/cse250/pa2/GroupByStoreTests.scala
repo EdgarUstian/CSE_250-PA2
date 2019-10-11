@@ -66,19 +66,25 @@ class GroupByStoreTests extends FlatSpec with BeforeAndAfter {
 
   it should "be updated after each insertion" in {
     val entries = loadEntries(smallFilename, maxCapacitySmallFile)
-    for (i <- 0 until entries.length) {
+    for (i <- entries.indices) {
       dataStore.insert(entries(i))
       assert(dataStore.length == i + 1)
     }
   }
 
   behavior of "GroupByStore.iterator"
+  it should "make hasNext return false when first initialised" in {
+    val store = new GroupByStore
+    assert(!store.iterator.hasNext)
+  }
+
+
   it should "retrieve all stored entries" in {
     val entries = loadEntries(smallFilename, maxCapacitySmallFile)
     val testEntriesSet = new mutable.HashSet[TaxEntry]
     
     // Add all loaded values into your dataStore.
-    for (i <- 0 until entries.length) {
+    for (i <- entries.indices) {
       dataStore.insert(entries(i))
       testEntriesSet.add(entries(i))
       assert(dataStore.length == i + 1)
@@ -87,7 +93,7 @@ class GroupByStoreTests extends FlatSpec with BeforeAndAfter {
     // Check that all loaded values are iterated through in your dataStore.
     val dataIterator = dataStore.iterator
     val storedEntriesSet = new mutable.HashSet[TaxEntry]
-    for (_ <- 0 until entries.length) {
+    for (_ <- entries.indices) {
       val taxEntry = dataIterator.next
       // Check that entry was in the set of inserted entries.
       assert(testEntriesSet.contains(taxEntry))
@@ -104,7 +110,7 @@ class GroupByStoreTests extends FlatSpec with BeforeAndAfter {
 
 
     // Add all loaded values into your dataStore.
-    for (i <- 0 until entries.length) {
+    for (i <- entries.indices) {
       dataStore.insert(entries(i))
       assert(dataStore.length == i + 1)
     }

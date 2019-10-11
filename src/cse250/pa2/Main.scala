@@ -15,9 +15,10 @@ package cse250.pa2
 import cse250.objects.TaxEntry
 
 import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 
 object Main {
-  def loadEntries(filename: String, numToLoad: Int) = {
+  def loadEntries(filename: String, numToLoad: Int): ArrayBuffer[TaxEntry] = {
     // Scala Cookbook reading CSV:
     // https://www.oreilly.com/library/view/scala-cookbook/9781449340292/ch12s06.html
     val bufferedSource = io.Source.fromFile(filename)
@@ -29,7 +30,7 @@ object Main {
       val cols = line.split(',')
       var colsIndex = 0
       val taxEntry = new TaxEntry
-      for (headerIndex <- 0 until TaxEntry.HEADERS.length) {
+      for (headerIndex <- TaxEntry.HEADERS.indices) {
         val entry = {
           if (colsIndex < cols.length && cols(colsIndex).length != 0 && cols(colsIndex)(0) == '"') {
             val sb = new StringBuilder
@@ -71,9 +72,9 @@ object Main {
     println(taxEntryStore)
     println("-----")
 
-    taxEntryStore.regroup("NEIGHBORHOOD")
+    taxEntryStore.regroup("PRINT KEY")
 
-    println(s"Storage after regrouping by NEIGHBORHOOD:")
+    println(s"Storage after regrouping by PRINT KEY:")
     println("-----")
     println(taxEntryStore)
     println("-----")
