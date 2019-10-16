@@ -30,7 +30,8 @@ class GroupByStore {
   /** Inserts element to head of corresponding grouping list. */
   def insert(taxEntry: TaxEntry): Unit = {
     //1. Init new Node
-    var node: DNode[TaxEntry] = new DNode[TaxEntry](taxEntry, null, null)
+    val node: DNode[TaxEntry] =
+      new DNode[TaxEntry](taxEntry, null, null)
     //2. Extract the grouping attribute
     val taxAttribute = taxEntry.infoMap(groupingAttribute)
     //3. Increment numStored
@@ -47,7 +48,8 @@ class GroupByStore {
       //7. Iterate groupings and find the value
       while(indX < groupings.length && !stop){
         //8. Extract grouping attribute
-        val groupAttribute: String = groupings(indX).value.infoMap(groupingAttribute)
+        val groupAttribute: String =
+          groupings(indX).value.infoMap(groupingAttribute)
         //9. If found
         if(taxAttribute == groupAttribute){
           groupings(indX).prev = node
