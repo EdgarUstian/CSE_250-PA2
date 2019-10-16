@@ -73,10 +73,6 @@ class GroupByStoreTests extends FlatSpec with BeforeAndAfter {
   }
 
   behavior of "GroupByStore.iterator"
-  it should "make hasNext return false when first initialised" in {
-    val store = new GroupByStore
-    assert(!store.iterator.hasNext)
-  }
 
 
   it should "retrieve all stored entries" in {

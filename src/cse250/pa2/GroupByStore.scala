@@ -29,43 +29,44 @@ class GroupByStore {
 
   /** Inserts element to head of corresponding grouping list. */
   def insert(taxEntry: TaxEntry): Unit = {
-    //Init new Node
+    //1. Init new Node
     var node: DNode[TaxEntry] = new DNode[TaxEntry](taxEntry, null, null)
-    //Extract the grouping attribute
+    //2. Extract the grouping attribute
     val taxAttribute = taxEntry.infoMap(groupingAttribute)
-    //Increment length
+    //3. Increment numStored
     numStored += 1
-    //Empty Case
+    //4. Empty Case
     if(groupings.isEmpty){
+
       groupings.append(node)
     }
-    //Non-Empty Case
+    //6. Non-Empty Case
     else{
       var indX: Int = 0
       var stop: Boolean = false
-      //Iterate groupings and find the value
+      //7. Iterate groupings and find the value
       while(indX < groupings.length && !stop){
-        //Extract grouping attribute
+        //8. Extract grouping attribute
         val groupAttribute: String = groupings(indX).value.infoMap(groupingAttribute)
-        //If found
+        //9. If found
         if(taxAttribute == groupAttribute){
           groupings(indX).prev = node
           node.next = groupings(indX)
           groupings(indX) = node
           stop = true
         }
-        //Not Found
-        //The attribute is greater
+        //10. Not Found
+        //11. The attribute is greater
         else if(taxAttribute > groupAttribute){
             indX += 1
         }
-        //The attribute is less
+        //12. The attribute is less
         else if(taxAttribute < groupAttribute){
           groupings.insert(indX, node)
           stop = true
         }
       }
-      //Reached the end (greatest value)
+      //13. Reached the end (greatest value)
       if(indX >= 0 && !stop){
         groupings.insert(indX, node)
       }
@@ -74,8 +75,11 @@ class GroupByStore {
 
   /** Regroup . */
   def regroup(attribute: String): Unit = {
+    //1. Reset numStored
     numStored = 0
+    //2. Change groupingAttribute
     groupingAttribute = attribute
+    //3. Add all nodes from groupings into tempList
     var tempList: List[TaxEntry] = List()
     for(indX <- groupings.indices){
       var node = groupings(indX)
@@ -85,7 +89,9 @@ class GroupByStore {
       }
       tempList = tempList :+ node.value
     }
+    //4. Clear groupings
     groupings.clear()
+    //5. Re-insert the nodes back into groupings
     for(entry <- tempList){
       insert(entry)
     }
