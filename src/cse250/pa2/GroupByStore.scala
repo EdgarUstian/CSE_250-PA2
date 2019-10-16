@@ -42,8 +42,8 @@ class GroupByStore {
     }
     //6. Non-Empty Case
     else{
-      var indX: Int = 0
-      var stop: Boolean = false
+      var indX: Int = 0          //Indexing value
+      var stop: Boolean = false  //breaks out of loop if true
       //7. Iterate groupings and find the value
       while(indX < groupings.length && !stop){
         //8. Extract grouping attribute
