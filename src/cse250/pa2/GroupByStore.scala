@@ -37,6 +37,7 @@ class GroupByStore {
     numStored += 1
     //4. Empty Case
     if(groupings.isEmpty){
+      //5. Insert node
       groupings.append(node)
     }
     //6. Non-Empty Case
